@@ -1,58 +1,76 @@
-import React from "react"
+import React, { useEffect, useState } from "react";
 import { TouchableOpacity, Image, StyleSheet, Text } from "react-native";
 
 interface Props {
-  filme: {
-    Poster: string,
-    Title: string,
-  },
-  fake_title1: string,
-  fake_title2: string,
+  opcoes: Filme[];
+  update(): void;
+  usados(filme: string): void;
 }
 
-const Card = ({filme, fake_title1, fake_title2}: Props) =>  {
-  let titles = []
+interface Filme {
+  Poster: string;
+  Title: string;
+}
 
-  if (filme!=undefined) {
-    titles.push(filme.Title)
-    titles.push(fake_title1)
+const Card = ({ opcoes, update, usados }: Props) => {
+  let sort: Filme = opcoes[Math.floor(Math.random() * opcoes.length)];
+  const [score, setScore] = useState<number>(0);
+  const [turns, setTurns] = useState<number>(0);
 
+  const buttonAction = (title: string) => {
+    if (title === sort.Title) {
+      setScore(score + 1);
+    }
+    update();
+    usados(sort.Title);
+    setTurns(turns + 1);
+  };
+
+  if (sort != undefined && turns !== 5) {
     return (
       <>
-        <Image source={{uri: filme.Poster}} style={styles.poster} />
-        <TouchableOpacity style={styles.title} >
-          <Text style={{color: '#FFFFFF'}}>
-            {filme.Title}
-          </Text>
+        <Image source={{ uri: sort.Poster }} style={styles.poster} />
+        <TouchableOpacity
+          onPress={() => buttonAction(opcoes[0].Title)}
+          style={styles.title}
+        >
+          <Text style={{ color: "#FFFFFF" }}>{opcoes[0].Title}</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.title} >
-          <Text style={{color: '#FFFFFF'}}>
-            {fake_title1}
-          </Text>
+        <TouchableOpacity
+          onPress={() => buttonAction(opcoes[1].Title)}
+          style={styles.title}
+        >
+          <Text style={{ color: "#FFFFFF" }}>{opcoes[1].Title}</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.title} >
-          <Text style={{color: '#FFFFFF'}}>
-            {fake_title2}
-          </Text>
+        <TouchableOpacity
+          onPress={() => buttonAction(opcoes[2].Title)}
+          style={styles.title}
+        >
+          <Text style={{ color: "#FFFFFF" }}>{opcoes[2].Title}</Text>
         </TouchableOpacity>
       </>
-    )  
-  }else{
-    return (<></>)
+    );
+  } else {
+    return (
+      <>
+        <Text style={{ color: "#ff0606", fontSize: 24 }}>The END</Text>
+        <Text style={{ color: "#ff0606", fontSize: 24 }}>Score: {score}</Text>
+      </>
+    );
   }
-}
+};
 
 const styles = StyleSheet.create({
   poster: {
-    width: 300, 
+    width: 300,
     height: 400,
   },
   title: {
     marginTop: 10,
-    alignItems: 'center',
-    backgroundColor: '#0000FF',
+    alignItems: "center",
+    backgroundColor: "#0000FF",
     padding: 10,
   },
-})
+});
 
 export default Card;
