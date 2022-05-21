@@ -16,8 +16,8 @@ export default function App() {
 
   async function getFilmes() {
     const { data } = await getMovies(
-      // films[Math.floor(Math.random() * films.length)]
-      "marvel"
+      films[Math.floor(Math.random() * films.length)]
+      // "marvel"
     );
     setFilmes(data.Search);
   }
