@@ -14,36 +14,40 @@ interface Filme {
 
 const Card = ({ opcoes, update, usados }: Props) => {
   let sort: Filme = opcoes[Math.floor(Math.random() * opcoes.length)];
-  const [score, setScore] = useState<number>(0);
-  const [turns, setTurns] = useState<number>(0);
+  const [pont, setPont] = useState<number>(0);
+  const [rodada, setRodada] = useState<number>(0);
 
-  const buttonAction = (title: string) => {
+  const escolherFilme = (title: string) => {
     if (title === sort.Title) {
-      setScore(score + 1);
+      setPont(pont + 1);
+      update();
+      usados(sort.Title);
+      setRodada(rodada + 1);
+    } else {
+      update();
+      usados(sort.Title);
+      setRodada(rodada + 1);
     }
-    update();
-    usados(sort.Title);
-    setTurns(turns + 1);
   };
 
-  if (sort != undefined && turns !== 5) {
+  if (sort != undefined && rodada !== 5) {
     return (
       <>
         <Image source={{ uri: sort.Poster }} style={styles.poster} />
         <TouchableOpacity
-          onPress={() => buttonAction(opcoes[0].Title)}
+          onPress={() => escolherFilme(opcoes[0].Title)}
           style={styles.title}
         >
           <Text style={{ color: "#FFFFFF" }}>{opcoes[0].Title}</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => buttonAction(opcoes[1].Title)}
+          onPress={() => escolherFilme(opcoes[1].Title)}
           style={styles.title}
         >
           <Text style={{ color: "#FFFFFF" }}>{opcoes[1].Title}</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => buttonAction(opcoes[2].Title)}
+          onPress={() => escolherFilme(opcoes[2].Title)}
           style={styles.title}
         >
           <Text style={{ color: "#FFFFFF" }}>{opcoes[2].Title}</Text>
@@ -53,8 +57,8 @@ const Card = ({ opcoes, update, usados }: Props) => {
   } else {
     return (
       <>
-        <Text style={{ color: "#ff0606", fontSize: 24 }}>The END</Text>
-        <Text style={{ color: "#ff0606", fontSize: 24 }}>Score: {score}</Text>
+        <Text style={{ color: "green", fontSize: 24 }}>The END</Text>
+        <Text style={{ color: "green", fontSize: 24 }}>Score: {pont}</Text>
       </>
     );
   }

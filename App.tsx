@@ -12,13 +12,9 @@ interface Filme {
 export default function App() {
   const [filmes, setFilmes] = useState<Filme[]>([]);
   const [usados, setUsados] = useState<string[]>([]);
-  const films = ["marvel", "harry-potter"];
 
   async function getFilmes() {
-    const { data } = await getMovies(
-      films[Math.floor(Math.random() * films.length)]
-      // "marvel"
-    );
+    const { data } = await getMovies("marvel");
     setFilmes(data.Search);
   }
 
@@ -54,8 +50,6 @@ export default function App() {
     if (!usados.includes(filme)) {
       usados.push(filme);
     }
-
-    console.log(usados);
   }
 
   useEffect(() => {
